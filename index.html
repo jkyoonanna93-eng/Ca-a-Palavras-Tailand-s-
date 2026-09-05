@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Thai Word Hunt 💙</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #dff6ff,
+        #8ed8f5
+    );
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #16445a;
+}
+
+.tela {
+    display: none;
+
+    width: 95%;
+    max-width: 850px;
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.15);
+
+    text-align: center;
+}
+
+.tela.ativa {
+    display: block;
+}
+
+h1 {
+    color: #239bd0;
+
+    font-size: 35px;
+
+    margin-bottom: 5px;
+}
+
+h2 {
+    color: #239bd0;
+}
+
+.subtitulo {
+    color: #6b8794;
+
+    margin-bottom: 25px;
+}
+
+button {
+
+    border: none;
+
+    border-radius: 15px;
+
+    padding: 13px 22px;
+
+    margin: 7px;
+
+    background: #42ace5;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+
+    transform: scale(1.04);
+
+    background: #239bd0;
+}
+
+button:active {
+
+    transform: scale(0.97);
+}
+
+input {
+
+    width: 90%;
+
+    max-width: 400px;
+
+    padding: 13px;
+
+    margin: 10px;
+
+    border-radius: 12px;
+
+    border: 2px solid #b9e5f7;
+
+    font-size: 16px;
+}
+
+.opcoes {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+}
+
+.opcao {
+
+    background: #e5f7ff;
+
+    color: #237fa8;
+
+    border: 2px solid #a8def3;
+}
+
+.opcao.selecionado {
+
+    background: #42ace5;
+
+    color: white;
+}
+
+
+/* JOGO */
+
+.info-jogo {
+
+    display: flex;
+
+    justify-content: space-around;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin: 15px 0;
+}
+
+.info {
+
+    background: #e9f8ff;
+
+    border-radius: 15px;
+
+    padding: 10px 18px;
+
+    font-weight: bold;
+}
+
+#grade {
+
+    margin: 20px auto;
+
+    display: grid;
+
+    gap: 4px;
+
+    justify-content: center;
+
+    user-select: none;
+
+    touch-action: none;
+
+    max-width: 100%;
+}
+
+.letra {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 9px;
+
+    background: #e9f8ff;
+
+    border: 2px solid #a8def3;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    touch-action: none;
+}
+
+.letra.selecionada {
+
+    background: #75cef1;
+
+    color: white;
+
+    border-color: #239bd0;
+}
+
+.letra.encontrada {
+
+    background: #5bcf9b;
+
+    color: white;
+
+    border-color: #37aa79;
+}
+
+.palavras {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.palavra {
+
+    background: #f0faff;
+
+    border: 2px solid #bce7f7;
+
+    border-radius: 12px;
+
+    padding: 8px 12px;
+}
+
+.palavra.encontrada {
+
+    background: #d5f7e6;
+
+    border-color: #65c99b;
+
+    text-decoration: line-through;
+
+    color: #438b6d;
+}
+
+#mensagem {
+
+    min-height: 25px;
+
+    font-weight: bold;
+
+    color: #239bd0;
+}
+
+
+/* RESULTADO */
+
+.resultado-box {
+
+    background: #e9f8ff;
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    margin: 20px 0;
+}
+
+.ranking {
+
+    text-align: left;
+
+    max-width: 600px;
+
+    margin: auto;
+}
+
+.ranking-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    background: #f3fbff;
+
+    border: 1px solid #c9eaf7;
+
+    padding: 10px;
+
+    margin: 6px 0;
+
+    border-radius: 12px;
+}
+
+.medalha {
+
+    font-size: 22px;
+}
+
+
+@media (max-width: 600px) {
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .tela {
+        padding: 17px;
+    }
+
+    .letra {
+
+        width: 31px;
+
+        height: 31px;
+
+        font-size: 15px;
+
+        border-radius: 6px;
+    }
+
+    #grade {
+        gap: 2px;
+    }
+
+    button {
+
+        font-size: 14px;
+
+        padding: 11px 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     INÍCIO
+========================= -->
+
+<div id="inicio" class="tela ativa">
+
+    <h1>
+        💙 Thai Word Hunt 🇹🇭
+    </h1>
+
+    <p class="subtitulo">
+        Aprenda tailandês brincando!
+    </p>
+
+    <div style="font-size:70px;">
+        🔎🩵🇹🇭
+    </div>
+
+    <p>
+        Encontre as palavras em tailandês
+        escondidas no caça-palavras!
+    </p>
+
+    <button onclick="mostrarTela('regras')">
+        📖 VER REGRAS
+    </button>
+
+</div>
+
+
+<!-- =========================
+     REGRAS
+========================= -->
+
+<div id="regras" class="tela">
+
+    <h2>
+        📖 Como jogar?
+    </h2>
+
+    <p>
+        🔎 Procure as palavras escondidas
+        na grade.
+    </p>
+
+    <p>
+        👆 No celular,
+        <b>arraste o dedo</b>
+        sobre as letras.
+    </p>
+
+    <p>
+        🖱️ No computador,
+        <b>arraste o mouse</b>.
+    </p>
+
+    <p>
+        ↔️ As palavras podem estar
+        na horizontal.
+    </p>
+
+    <p>
+        ↕️ Também podem estar
+        na vertical.
+    </p>
+
+    <p>
+        ↗️ Podem estar
+        na diagonal.
+    </p>
+
+    <p>
+        🔄 Algumas palavras podem
+        estar ao contrário.
+    </p>
+
+    <p>
+        ⏱️ Quanto menos tempo,
+        melhor!
+    </p>
+
+    <p>
+        ⭐ Encontre todas para terminar.
+    </p>
+
+    <button onclick="mostrarTela('configuracao')">
+        ▶️ CONTINUAR
+    </button>
+
+</div>
+
+
+<!-- =========================
+     CONFIGURAÇÃO
+========================= -->
+
+<div id="configuracao" class="tela">
+
+    <h2>
+        ⚙️ Configuração
+    </h2>
+
+    <p>
+        Digite seu nome:
+    </p>
+
+    <input
+        type="text"
+        id="nomeJogador"
+        placeholder="Seu nome..."
+        maxlength="20"
+    >
+
+
+    <h3>
+        📚 Escolha uma categoria
+    </h3>
+
+    <div class="opcoes">
+
+        <button
+            class="opcao categoria-btn selecionado"
+            data-categoria="cumprimentos">
+
+            👋 Cumprimentos
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="numeros">
+
+            🔢 Números
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="cores">
+
+            🎨 Cores
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="familia">
+
+            👨‍👩‍👧 Família
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="comida">
+
+            🍜 Comida
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="animais">
+
+            🐱 Animais
+
+        </button>
+
+        <button
+            class="opcao categoria-btn"
+            data-categoria="escola">
+
+            📚 Escola
+
+        </button>
+
+    </div>
+
+
+    <h3>
+        ⭐ Dificuldade
+    </h3>
+
+    <div class="opcoes">
+
+        <button
+            class="opcao dificuldade-btn selecionado"
+            data-dificuldade="facil">
+
+            😊 Fácil
+
+        </button>
+
+        <button
+            class="opcao dificuldade-btn"
+            data-dificuldade="medio">
+
+            😎 Médio
+
+        </button>
+
+        <button
+            class="opcao dificuldade-btn"
+            data-dificuldade="dificil">
+
+            🔥 Difícil
+
+        </button>
+
+    </div>
+
+
+    <br>
+
+    <button onclick="iniciarJogo()">
+
+        🚀 COMEÇAR
+
+    </button>
+
+</div>
+
+
+<!-- =========================
+     JOGO
+========================= -->
+
+<div id="jogo" class="tela">
+
+    <h2>
+        🔎 Thai Word Hunt
+    </h2>
+
+
+    <div class="info-jogo">
+
+        <div class="info">
+
+            ⏱️
+            <span id="tempo">
+                00:00
+            </span>
+
+        </div>
+
+
+        <div class="info">
+
+            ⭐
+            <span id="pontos">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="info">
+
+            📝
+            <span id="contador">
+                0/0
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <p id="mensagem">
+
+        Encontre as palavras! 🔎
+
+    </p>
+
+
+    <div id="grade"></div>
+
+
+    <h3>
+        🔎 Palavras:
+    </h3>
+
+
+    <div
+        id="listaPalavras"
+        class="palavras">
+    </div>
+
+</div>
+
+
+<!-- =========================
+     RESULTADO
+========================= -->
+
+<div id="resultado" class="tela">
+
+    <h1>
+        🎉 Parabéns!
+    </h1>
+
+    <div style="font-size:60px;">
+        🏆💙
+    </div>
+
+
+    <div class="resultado-box">
+
+        <h3>
+            Seu resultado
+        </h3>
+
+
+        <p>
+
+            👤 Jogador:
+
+            <b id="resultadoNome"></b>
+
+        </p>
+
+
+        <p>
+
+            ⏱️ Tempo:
+
+            <b id="resultadoTempo"></b>
+
+        </p>
+
+
+        <p>
+
+            ⭐ Pontos:
+
+            <b id="resultadoPontos"></b>
+
+        </p>
+
+    </div>
+
+
+    <h2>
+        🏆 Ranking
+    </h2>
+
+
+    <div
+        id="ranking"
+        class="ranking">
+    </div>
+
+
+    <button onclick="voltarInicio()">
+
+        🏠 INÍCIO
+
+    </button>
+
+
+    <button onclick="novoJogo()">
+
+        🔄 JOGAR NOVAMENTE
+
+    </button>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   BANCO DE PALAVRAS
+========================= */
+
+const bancoPalavras = {
+
+    cumprimentos: [
+
+        ["สวัสดี", "Olá"],
+
+        ["ขอบคุณ", "Obrigado(a)"],
+
+        ["ลาก่อน", "Tchau"],
+
+        ["ขอโทษ", "Desculpa"],
+
+        ["ใช่", "Sim"],
+
+        ["ไม่", "Não"],
+
+        ["สบายดี", "Estou bem"],
+
+        ["ยินดี", "Feliz"]
+
+    ],
+
+
+    numeros: [
+
+        ["หนึ่ง", "1"],
+
+        ["สอง", "2"],
+
+        ["สาม", "3"],
+
+        ["สี่", "4"],
+
+        ["ห้า", "5"],
+
+        ["หก", "6"],
+
+        ["เจ็ด", "7"],
+
+        ["แปด", "8"],
+
+        ["เก้า", "9"],
+
+        ["สิบ", "10"]
+
+    ],
+
+
+    cores: [
+
+        ["แดง", "Vermelho"],
+
+        ["น้ำเงิน", "Azul"],
+
+        ["เขียว", "Verde"],
+
+        ["เหลือง", "Amarelo"],
+
+        ["ชมพู", "Rosa"],
+
+        ["ดำ", "Preto"],
+
+        ["ขาว", "Branco"],
+
+        ["ม่วง", "Roxo"]
+
+    ],
+
+
+    familia: [
+
+        ["แม่", "Mãe"],
+
+        ["พ่อ", "Pai"],
+
+        ["พี่", "Irmão/irmã mais velho"],
+
+        ["น้อง", "Irmão/irmã mais novo"],
+
+        ["ลูก", "Filho(a)"],
+
+        ["ยาย", "Avó materna"],
+
+        ["ตา", "Avô materno"],
+
+        ["ครอบครัว", "Família"]
+
+    ],
+
+
+    comida: [
+
+        ["ข้าว", "Arroz"],
+
+        ["น้ำ", "Água"],
+
+        ["นม", "Leite"],
+
+        ["กาแฟ", "Café"],
+
+        ["ชา", "Chá"],
+
+        ["ไข่", "Ovo"],
+
+        ["ปลา", "Peixe"],
+
+        ["ไก่", "Frango"]
+
+    ],
+
+
+    animais: [
+
+        ["แมว", "Gato"],
+
+        ["หมา", "Cachorro"],
+
+        ["ปลา", "Peixe"],
+
+        ["นก", "Pássaro"],
+
+        ["ช้าง", "Elefante"],
+
+        ["เสือ", "Tigre"],
+
+        ["ม้า", "Cavalo"],
+
+        ["กระต่าย", "Coelho"]
+
+    ],
+
+
+    escola: [
+
+        ["โรงเรียน", "Escola"],
+
+        ["ครู", "Professor(a)"],
+
+        ["นักเรียน", "Aluno(a)"],
+
+        ["หนังสือ", "Livro"],
+
+        ["ปากกา", "Caneta"],
+
+        ["ดินสอ", "Lápis"],
+
+        ["โต๊ะ", "Mesa"],
+
+        ["ห้องเรียน", "Sala de aula"]
+
+    ]
+
+};
+
+
+
+/* =========================
+   VARIÁVEIS
+========================= */
+
+let categoriaEscolhida =
+    "cumprimentos";
+
+let dificuldadeEscolhida =
+    "facil";
+
+let nome = "";
+
+let palavras = [];
+
+let grade = [];
+
+let tamanho = 10;
+
+let palavrasEncontradas = [];
+
+let intervalo;
+
+let segundos = 0;
+
+let pontos = 0;
+
+let arrastando = false;
+
+let inicioSelecao = null;
+
+let celulasSelecao = [];
+
+
+
+/* =========================
+   TROCAR DE TELA
+========================= */
+
+function mostrarTela(id) {
+
+    document
+        .querySelectorAll(".tela")
+        .forEach(tela => {
+
+            tela.classList.remove(
+                "ativa"
+            );
+
+        });
+
+
+    document
+        .getElementById(id)
+        .classList.add("ativa");
+
+}
+
+
+
+/* =========================
+   EMBARALHAR
+========================= */
+
+function embaralhar(array) {
+
+    for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+    return array;
+
+}
+
+
+
+/* =========================
+   CATEGORIA
+========================= */
+
+document
+    .querySelectorAll(".categoria-btn")
+    .forEach(botao => {
+
+        botao.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".categoria-btn"
+                    )
+                    .forEach(b => {
+
+                        b.classList.remove(
+                            "selecionado"
+                        );
+
+                    });
+
+
+                botao.classList.add(
+                    "selecionado"
+                );
+
+
+                categoriaEscolhida =
+                    botao.dataset.categoria;
+
+            }
+        );
+
+    });
+
+
+
+/* =========================
+   DIFICULDADE
+========================= */
+
+document
+    .querySelectorAll(".dificuldade-btn")
+    .forEach(botao => {
+
+        botao.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".dificuldade-btn"
+                    )
+                    .forEach(b => {
+
+                        b.classList.remove(
+                            "selecionado"
+                        );
+
+                    });
+
+
+                botao.classList.add(
+                    "selecionado"
+                );
+
+
+                dificuldadeEscolhida =
+                    botao.dataset.dificuldade;
+
+            }
+        );
+
+    });
+
+
+
+/* =========================
+   SEPARAR THAI
+========================= */
+
+function separarThai(texto) {
+
+    if (Intl.Segmenter) {
+
+        const segmenter =
+            new Intl.Segmenter(
+                "th",
+                {
+                    granularity:
+                        "grapheme"
+                }
+            );
+
+
+        return [
+            ...segmenter.segment(texto)
+        ]
+        .map(
+            x => x.segment
+        );
+
+    }
+
+
+    return [...texto];
+
+}
+
+
+
+/* =========================
+   INICIAR JOGO
+========================= */
+
+function iniciarJogo() {
+
+    nome =
+        document
+            .getElementById(
+                "nomeJogador"
+            )
+            .value
+            .trim();
+
+
+    if (!nome) {
+
+        alert(
+            "Digite seu nome primeiro! 💙"
+        );
+
+        return;
+
+    }
+
+
+    /*
+       EMBARALHA O BANCO
+       ANTES DE ESCOLHER AS PALAVRAS
+    */
+
+    const bancoEmbaralhado =
+        embaralhar(
+            [
+                ...bancoPalavras[
+                    categoriaEscolhida
+                ]
+            ]
+        );
+
+
+    if (
+        dificuldadeEscolhida ===
+        "facil"
+    ) {
+
+        tamanho = 10;
+
+        palavras =
+            bancoEmbaralhado.slice(
+                0,
+                5
+            );
+
+    }
+
+    else if (
+        dificuldadeEscolhida ===
+        "medio"
+    ) {
+
+        tamanho = 11;
+
+        palavras =
+            bancoEmbaralhado.slice(
+                0,
+                7
+            );
+
+    }
+
+    else {
+
+        tamanho = 12;
+
+        palavras =
+            bancoEmbaralhado.slice(
+                0,
+                8
+            );
+
+    }
+
+
+    palavrasEncontradas = [];
+
+    pontos = 0;
+
+    segundos = 0;
+
+
+    document
+        .getElementById("pontos")
+        .textContent = "0";
+
+
+    document
+        .getElementById("tempo")
+        .textContent = "00:00";
+
+
+    document
+        .getElementById("contador")
+        .textContent =
+        "0/" + palavras.length;
+
+
+    document
+        .getElementById("mensagem")
+        .textContent =
+        "Encontre as palavras! 🔎";
+
+
+    criarGrade();
+
+    mostrarPalavras();
+
+    iniciarCronometro();
+
+    mostrarTela("jogo");
+
+}
+
+
+
+/* =========================
+   CRIAR GRADE
+========================= */
+
+function criarGrade() {
+
+    grade = [];
+
+
+    for (
+        let linha = 0;
+        linha < tamanho;
+        linha++
+    ) {
+
+        grade[linha] = [];
+
+
+        for (
+            let coluna = 0;
+            coluna < tamanho;
+            coluna++
+        ) {
+
+            grade[linha][coluna] =
+                null;
+
+        }
+
+    }
+
+
+    /*
+       COLOCA AS PALAVRAS
+       EM POSIÇÕES ALEATÓRIAS
+    */
+
+    for (
+        let item of palavras
+    ) {
+
+        colocarPalavra(
+            item[0]
+        );
+
+    }
+
+
+    /*
+       PREENCHE ESPAÇOS VAZIOS
+    */
+
+    const letrasThai = [
+
+        "ก","ข","ค","ง","จ","ฉ","ช","ซ",
+        "ญ","ด","ต","ถ","ท","น","บ","ป",
+        "พ","ฟ","ม","ย","ร","ล","ว","ส",
+        "ห","อ","ฮ","เ","แ","ไ","ใ","โ"
+
+    ];
+
+
+    for (
+        let linha = 0;
+        linha < tamanho;
+        linha++
+    ) {
+
+        for (
+            let coluna = 0;
+            coluna < tamanho;
+            coluna++
+        ) {
+
+            if (
+                !grade[linha][coluna]
+            ) {
+
+                grade[linha][coluna] =
+
+                    letrasThai[
+                        Math.floor(
+                            Math.random() *
+                            letrasThai.length
+                        )
+                    ];
+
+            }
+
+        }
+
+    }
+
+
+    desenharGrade();
+
+}
+
+
+
+/* =========================
+   COLOCAR PALAVRA
+========================= */
+
+function colocarPalavra(
+    palavra
+) {
+
+    const letras =
+        separarThai(palavra);
+
+
+    const direcoes = [
+
+        [0, 1],
+
+        [0, -1],
+
+        [1, 0],
+
+        [-1, 0],
+
+        [1, 1],
+
+        [1, -1],
+
+        [-1, 1],
+
+        [-1, -1]
+
+    ];
+
+
+    for (
+        let tentativa = 0;
+        tentativa < 300;
+        tentativa++
+    ) {
+
+
+        const direcao =
+
+            direcoes[
+                Math.floor(
+                    Math.random() *
+                    direcoes.length
+                )
+            ];
+
+
+        const linhaInicial =
+
+            Math.floor(
+                Math.random() *
+                tamanho
+            );
+
+
+        const colunaInicial =
+
+            Math.floor(
+                Math.random() *
+                tamanho
+            );
+
+
+        const linhaFinal =
+
+            linhaInicial +
+            direcao[0] *
+            (letras.length - 1);
+
+
+        const colunaFinal =
+
+            colunaInicial +
+            direcao[1] *
+            (letras.length - 1);
+
+
+        /*
+           VERIFICA SE CABE
+        */
+
+        if (
+
+            linhaFinal < 0 ||
+
+            linhaFinal >= tamanho ||
+
+            colunaFinal < 0 ||
+
+            colunaFinal >= tamanho
+
+        ) {
+
+            continue;
+
+        }
+
+
+        let pode = true;
+
+
+        /*
+           VERIFICA CONFLITOS
+        */
+
+        for (
+            let i = 0;
+            i < letras.length;
+            i++
+        ) {
+
+            const linha =
+
+                linhaInicial +
+                direcao[0] * i;
+
+
+            const coluna =
+
+                colunaInicial +
+                direcao[1] * i;
+
+
+            if (
+
+                grade[linha][coluna]
+                !== null &&
+
+                grade[linha][coluna]
+                !== letras[i]
+
+            ) {
+
+                pode = false;
+
+                break;
+
+            }
+
+        }
+
+
+        if (!pode) {
+
+            continue;
+
+        }
+
+
+        /*
+           COLOCA A PALAVRA
+        */
+
+        for (
+            let i = 0;
+            i < letras.length;
+            i++
+        ) {
+
+            const linha =
+
+                linhaInicial +
+                direcao[0] * i;
+
+
+            const coluna =
+
+                colunaInicial +
+                direcao[1] * i;
+
+
+            grade[linha][coluna] =
+                letras[i];
+
+        }
+
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+
+/* =========================
+   DESENHAR
+========================= */
+
+function desenharGrade() {
+
+    const elemento =
+        document.getElementById(
+            "grade"
+        );
+
+
+    elemento.innerHTML = "";
+
+
+    elemento.style.gridTemplateColumns =
+
+        `repeat(${tamanho}, auto)`;
+
+
+    for (
+        let linha = 0;
+        linha < tamanho;
+        linha++
+    ) {
+
+        for (
+            let coluna = 0;
+            coluna < tamanho;
+            coluna++
+        ) {
+
+            const celula =
+                document.createElement(
+                    "div"
+                );
+
+
+            celula.className =
+                "letra";
+
+
+            celula.textContent =
+                grade[linha][coluna];
+
+
+            celula.dataset.linha =
+                linha;
+
+
+            celula.dataset.coluna =
+                coluna;
+
+
+            celula.addEventListener(
+                "pointerdown",
+                iniciarSelecao
+            );
+
+
+            elemento.appendChild(
+                celula
+            );
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================
+   LISTA DE PALAVRAS
+========================= */
+
+function mostrarPalavras() {
+
+    const lista =
+        document.getElementById(
+            "listaPalavras"
+        );
+
+
+    lista.innerHTML = "";
+
+
+    palavras.forEach(
+        (item, index) => {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "palavra";
+
+
+            div.id =
+                "palavra-" + index;
+
+
+            div.innerHTML =
+
+                `<b>${item[0]}</b>
+                <br>
+                <small>
+                    ${item[1]}
+                </small>`;
+
+
+            lista.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   INICIAR SELEÇÃO
+========================= */
+
+function iniciarSelecao(event) {
+
+    event.preventDefault();
+
+
+    arrastando = true;
+
+
+    const celula =
+        event.currentTarget;
+
+
+    inicioSelecao = {
+
+        linha:
+            Number(
+                celula.dataset.linha
+            ),
+
+        coluna:
+            Number(
+                celula.dataset.coluna
+            )
+
+    };
+
+
+    limparSelecao();
+
+
+    marcarSelecao(
+
+        inicioSelecao,
+
+        inicioSelecao
+
+    );
+
+}
+
+
+
+/* =========================
+   MOVIMENTO
+========================= */
+
+document.addEventListener(
+
+    "pointermove",
+
+    event => {
+
+        if (!arrastando)
+            return;
+
+
+        event.preventDefault();
+
+
+        const elemento =
+
+            document.elementFromPoint(
+
+                event.clientX,
+
+                event.clientY
+
+            );
+
+
+        if (!elemento)
+            return;
+
+
+        const celula =
+            elemento.closest(
+                ".letra"
+            );
+
+
+        if (!celula)
+            return;
+
+
+        const atual = {
+
+            linha:
+                Number(
+                    celula.dataset.linha
+                ),
+
+            coluna:
+                Number(
+                    celula.dataset.coluna
+                )
+
+        };
+
+
+        marcarSelecao(
+
+            inicioSelecao,
+
+            atual
+
+        );
+
+    },
+
+    {
+        passive: false
+    }
+
+);
+
+
+
+/* =========================
+   FINALIZAR TOQUE
+========================= */
+
+document.addEventListener(
+
+    "pointerup",
+
+    finalizarSelecao
+
+);
+
+
+
+/* =========================
+   MARCAR SELEÇÃO
+========================= */
+
+function marcarSelecao(
+    inicio,
+    fim
+) {
+
+    limparSelecao();
+
+
+    const deltaLinha =
+        fim.linha -
+        inicio.linha;
+
+
+    const deltaColuna =
+        fim.coluna -
+        inicio.coluna;
+
+
+    const horizontal =
+        deltaLinha === 0;
+
+
+    const vertical =
+        deltaColuna === 0;
+
+
+    const diagonal =
+
+        Math.abs(deltaLinha) ===
+        Math.abs(deltaColuna);
+
+
+    if (
+
+        !horizontal &&
+        !vertical &&
+        !diagonal
+
+    ) {
+
+        return;
+
+    }
+
+
+    const passoLinha =
+        Math.sign(
+            deltaLinha
+        );
+
+
+    const passoColuna =
+        Math.sign(
+            deltaColuna
+        );
+
+
+    const quantidade =
+
+        Math.max(
+
+            Math.abs(
+                deltaLinha
+            ),
+
+            Math.abs(
+                deltaColuna
+            )
+
+        );
+
+
+    celulasSelecao = [];
+
+
+    for (
+        let i = 0;
+        i <= quantidade;
+        i++
+    ) {
+
+        const linha =
+
+            inicio.linha +
+            passoLinha * i;
+
+
+        const coluna =
+
+            inicio.coluna +
+            passoColuna * i;
+
+
+        const celula =
+
+            document.querySelector(
+
+                `.letra[data-linha="${linha}"][data-coluna="${coluna}"]`
+
+            );
+
+
+        if (celula) {
+
+            celula.classList.add(
+                "selecionada"
+            );
+
+
+            celulasSelecao.push({
+
+                linha,
+
+                coluna
+
+            });
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================
+   LIMPAR SELEÇÃO
+========================= */
+
+function limparSelecao() {
+
+    document
+        .querySelectorAll(
+            ".letra.selecionada"
+        )
+        .forEach(celula => {
+
+            if (
+
+                !celula.classList
+                    .contains(
+                        "encontrada"
+                    )
+
+            ) {
+
+                celula.classList
+                    .remove(
+                        "selecionada"
+                    );
+
+            }
+
+        });
+
+}
+
+
+
+/* =========================
+   VERIFICAR PALAVRA
+========================= */
+
+function verificarPalavra() {
+
+    if (
+        celulasSelecao.length < 2
+    ) {
+
+        limparSelecao();
+
+        return;
+
+    }
+
+
+    let texto = "";
+
+
+    celulasSelecao.forEach(
+        posicao => {
+
+            texto +=
+
+                grade[
+                    posicao.linha
+                ][
+                    posicao.coluna
+                ];
+
+        }
+    );
+
+
+    const reverso =
+
+        separarThai(texto)
+        .reverse()
+        .join("");
+
+
+    let encontrada = false;
+
+
+    palavras.forEach(
+        (item, index) => {
+
+            const palavra =
+                item[0];
+
+
+            if (
+
+                !palavrasEncontradas
+                    .includes(index) &&
+
+                (
+
+                    texto === palavra ||
+
+                    reverso === palavra
+
+                )
+
+            ) {
+
+                encontrada = true;
+
+
+                palavrasEncontradas
+                    .push(index);
+
+
+                pontos += 100;
+
+
+                document
+                    .getElementById(
+                        "pontos"
+                    )
+                    .textContent =
+                    pontos;
+
+
+                document
+                    .getElementById(
+                        "palavra-" +
+                        index
+                    )
+                    .classList
+                    .add(
+                        "encontrada"
+                    );
+
+
+                celulasSelecao
+                    .forEach(
+                        posicao => {
+
+                            const celula =
+
+                                document.querySelector(
+
+                                    `.letra[data-linha="${posicao.linha}"][data-coluna="${posicao.coluna}"]`
+
+                                );
+
+
+                            if (celula) {
+
+                                celula
+                                    .classList
+                                    .remove(
+                                        "selecionada"
+                                    );
+
+
+                                celula
+                                    .classList
+                                    .add(
+                                        "encontrada"
+                                    );
+
+                            }
+
+                        }
+                    );
+
+
+                document
+                    .getElementById(
+                        "mensagem"
+                    )
+                    .textContent =
+
+                    "🎉 Encontrou: " +
+                    palavra;
+
+            }
+
+        }
+    );
+
+
+    if (!encontrada) {
+
+        limparSelecao();
+
+
+        document
+            .getElementById(
+                "mensagem"
+            )
+            .textContent =
+
+            "❌ Essa não é uma palavra!";
+
+    }
+
+
+    document
+        .getElementById(
+            "contador"
+        )
+        .textContent =
+
+        palavrasEncontradas.length +
+        "/" +
+        palavras.length;
+
+
+    if (
+
+        palavrasEncontradas.length ===
+        palavras.length
+
+    ) {
+
+        terminarJogo();
+
+    }
+
+}
+
+
+
+/* =========================
+   CRONÔMETRO
+========================= */
+
+function iniciarCronometro() {
+
+    clearInterval(intervalo);
+
+
+    segundos = 0;
+
+
+    document
+        .getElementById(
+            "tempo"
+        )
+        .textContent =
+        "00:00";
+
+
+    intervalo =
+        setInterval(
+            () => {
+
+                segundos++;
+
+
+                document
+                    .getElementById(
+                        "tempo"
+                    )
+                    .textContent =
+
+                    formatarTempo(
+                        segundos
+                    );
+
+            },
+            1000
+        );
+
+}
+
+
+
+/* =========================
+   FORMATAR TEMPO
+========================= */
+
+function formatarTempo(
+    segundos
+) {
+
+    const minutos =
+
+        Math.floor(
+            segundos / 60
+        );
+
+
+    const seg =
+        segundos % 60;
+
+
+    return (
+
+        String(minutos)
+            .padStart(2, "0")
+
+        +
+
+        ":" +
+
+        String(seg)
+            .padStart(2, "0")
+
+    );
+
+}
+
+
+
+/* =========================
+   TERMINAR
+========================= */
+
+function terminarJogo() {
+
+    clearInterval(intervalo);
+
+
+    const tempoFinal =
+        formatarTempo(
+            segundos
+        );
+
+
+    document
+        .getElementById(
+            "resultadoNome"
+        )
+        .textContent =
+        nome;
+
+
+    document
+        .getElementById(
+            "resultadoTempo"
+        )
+        .textContent =
+        tempoFinal;
+
+
+    document
+        .getElementById(
+            "resultadoPontos"
+        )
+        .textContent =
+        pontos;
+
+
+    salvarRanking(
+        nome,
+        segundos,
+        pontos
+    );
+
+
+    mostrarRanking();
+
+
+    setTimeout(
+        () => {
+
+            mostrarTela(
+                "resultado"
+            );
+
+        },
+        500
+    );
+
+}
+
+
+
+/* =========================
+   SALVAR RANKING
+========================= */
+
+function salvarRanking(
+    nome,
+    tempo,
+    pontos
+) {
+
+    let ranking =
+
+        JSON.parse(
+
+            localStorage.getItem(
+                "thaiWordHuntRanking"
+            )
+
+        ) || [];
+
+
+    ranking.push({
+
+        nome: nome,
+
+        tempo: tempo,
+
+        pontos: pontos,
+
+        categoria:
+            categoriaEscolhida,
+
+        dificuldade:
+            dificuldadeEscolhida
+
+    });
+
+
+    ranking.sort(
+
+        (a, b) =>
+            a.tempo - b.tempo
+
+    );
+
+
+    ranking =
+        ranking.slice(
+            0,
+            10
+        );
+
+
+    localStorage.setItem(
+
+        "thaiWordHuntRanking",
+
+        JSON.stringify(
+            ranking
+        )
+
+    );
+
+}
+
+
+
+/* =========================
+   MOSTRAR RANKING
+========================= */
+
+function mostrarRanking() {
+
+    const elemento =
+        document.getElementById(
+            "ranking"
+        );
+
+
+    let ranking =
+
+        JSON.parse(
+
+            localStorage.getItem(
+                "thaiWordHuntRanking"
+            )
+
+        ) || [];
+
+
+    elemento.innerHTML = "";
+
+
+    if (
+        ranking.length === 0
+    ) {
+
+        elemento.innerHTML =
+            "<p>Nenhum resultado ainda.</p>";
+
+        return;
+
+    }
+
+
+    ranking.forEach(
+        (jogador, index) => {
+
+            let medalha;
+
+
+            if (index === 0)
+                medalha = "🥇";
+
+            else if (index === 1)
+                medalha = "🥈";
+
+            else if (index === 2)
+                medalha = "🥉";
+
+            else
+                medalha = "🏅";
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "ranking-item";
+
+
+            div.innerHTML = `
+
+                <span>
+
+                    <span class="medalha">
+                        ${medalha}
+                    </span>
+
+                    <b>
+                        ${index + 1}º
+                        ${jogador.nome}
+                    </b>
+
+                </span>
+
+                <span>
+
+                    ⏱️
+                    ${formatarTempo(
+                        jogador.tempo
+                    )}
+
+                    <br>
+
+                    ⭐
+                    ${jogador.pontos}
+
+                </span>
+
+            `;
+
+
+            elemento.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   VOLTAR AO INÍCIO
+========================= */
+
+function voltarInicio() {
+
+    clearInterval(intervalo);
+
+    mostrarTela(
+        "inicio"
+    );
+
+}
+
+
+
+/* =========================
+   JOGAR NOVAMENTE
+========================= */
+
+function novoJogo() {
+
+    /*
+       Mantém o nome,
+       mas cria uma NOVA GRADE
+       e EMBARALHA tudo novamente.
+    */
+
+    document
+        .getElementById(
+            "nomeJogador"
+        )
+        .value = nome;
+
+
+    iniciarJogo();
+
+}
+
+
+
+/* =========================
+   IMPEDIR SCROLL NO CELULAR
+========================= */
+
+document
+    .getElementById("grade")
+    .addEventListener(
+
+        "touchstart",
+
+        event => {
+
+            event.preventDefault();
+
+        },
+
+        {
+            passive: false
+        }
+
+    );
+
+
+document
+    .getElementById("grade")
+    .addEventListener(
+
+        "touchmove",
+
+        event => {
+
+            event.preventDefault();
+
+        },
+
+        {
+            passive: false
+        }
+
+    );
+
+</script>
+
+</body>
+</html>
