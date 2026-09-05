@@ -521,7 +521,7 @@ const bancoPalavras = {
 
   comida: [
     ["ข้าว", "Arroz"],
-    ["น้ำ", "Água"],
+    ["ขนม", "Doce"],
     ["นม", "Leite"],
     ["กาแฟ", "Café"],
     ["ชา", "Chá"],
@@ -560,29 +560,17 @@ const bancoPalavras = {
 ========================= */
 
 let categoriaEscolhida = "cumprimentos";
-
 let dificuldadeEscolhida = "facil";
-
 let nome = "";
-
 let palavras = [];
-
 let grade = [];
-
 let tamanho = 10;
-
 let palavrasEncontradas = [];
-
 let intervalo;
-
 let segundos = 0;
-
 let pontos = 0;
-
 let arrastando = false;
-
 let inicioSelecao = null;
-
 let celulasSelecao = [];
 
 
@@ -633,7 +621,7 @@ function embaralhar(array) {
 
 
 /* =========================
-   BOTÕES DE CATEGORIA
+   CATEGORIAS
 ========================= */
 
 document
@@ -658,7 +646,7 @@ document
 
 
 /* =========================
-   BOTÕES DE DIFICULDADE
+   DIFICULDADE
 ========================= */
 
 document
@@ -684,7 +672,6 @@ document
 
 /* =========================
    SEPARAR TAILANDÊS
-   CORREÇÃO DO น้ำ
 ========================= */
 
 function separarThai(texto) {
@@ -708,20 +695,12 @@ function separarThai(texto) {
 
   }
 
-  /*
-    Se o navegador não tiver
-    Intl.Segmenter, usamos
-    normalização Unicode.
-  */
-
-  return [
-    ...texto.normalize("NFC")
-  ];
+  return [...texto.normalize("NFC")];
 }
 
 
 /* =========================
-   NORMALIZAR PALAVRA
+   NORMALIZAR TAILANDÊS
 ========================= */
 
 function normalizarThai(texto) {
@@ -769,7 +748,6 @@ function iniciarJogo() {
   ) {
 
     tamanho = 10;
-
     palavras =
       bancoEmbaralhado.slice(0, 5);
 
@@ -780,7 +758,6 @@ function iniciarJogo() {
   ) {
 
     tamanho = 11;
-
     palavras =
       bancoEmbaralhado.slice(0, 7);
 
@@ -789,7 +766,6 @@ function iniciarJogo() {
   else {
 
     tamanho = 12;
-
     palavras =
       bancoEmbaralhado.slice(0, 8);
 
@@ -797,15 +773,10 @@ function iniciarJogo() {
 
 
   palavrasEncontradas = [];
-
   pontos = 0;
-
   segundos = 0;
-
   arrastando = false;
-
   inicioSelecao = null;
-
   celulasSelecao = [];
 
 
@@ -832,11 +803,8 @@ function iniciarJogo() {
 
 
   criarGrade();
-
   mostrarPalavras();
-
   iniciarCronometro();
-
   mostrarTela("jogo");
 }
 
@@ -1732,7 +1700,7 @@ function terminarJogo() {
 
 
 /* =========================
-   RANKING
+   SALVAR RANKING
 ========================= */
 
 function salvarRanking(
@@ -1882,7 +1850,7 @@ function mostrarRanking() {
 
 
 /* =========================
-   VOLTAR
+   VOLTAR AO INÍCIO
 ========================= */
 
 function voltarInicio() {
