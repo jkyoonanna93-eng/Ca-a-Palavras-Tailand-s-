@@ -8,7 +8,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Thai Word Hunt 💙</title>
+<title>Caça-Palavras Tailandês 💙</title>
 
 <style>
 
@@ -59,9 +59,7 @@ body {
 
 h1 {
     color: #239bd0;
-
     font-size: 35px;
-
     margin-bottom: 5px;
 }
 
@@ -71,7 +69,6 @@ h2 {
 
 .subtitulo {
     color: #6b8794;
-
     margin-bottom: 25px;
 }
 
@@ -99,14 +96,11 @@ button {
 }
 
 button:hover {
-
     transform: scale(1.04);
-
     background: #239bd0;
 }
 
 button:active {
-
     transform: scale(0.97);
 }
 
@@ -153,7 +147,9 @@ input {
 }
 
 
-/* JOGO */
+/* =========================
+   JOGO
+========================= */
 
 .info-jogo {
 
@@ -288,7 +284,9 @@ input {
 }
 
 
-/* RESULTADO */
+/* =========================
+   RESULTADO
+========================= */
 
 .resultado-box {
 
@@ -330,10 +328,13 @@ input {
 }
 
 .medalha {
-
     font-size: 22px;
 }
 
+
+/* =========================
+   CELULAR
+========================= */
 
 @media (max-width: 600px) {
 
@@ -384,7 +385,7 @@ input {
 <div id="inicio" class="tela ativa">
 
     <h1>
-        💙 Thai Word Hunt 🇹🇭
+        💙 Caça-Palavras Tailandês 🇹🇭
     </h1>
 
     <p class="subtitulo">
@@ -444,7 +445,7 @@ input {
     </p>
 
     <p>
-        ↗️ Podem estar
+        ↗️ Também podem estar
         na diagonal.
     </p>
 
@@ -459,7 +460,8 @@ input {
     </p>
 
     <p>
-        ⭐ Encontre todas para terminar.
+        ⭐ Encontre todas as palavras
+        para terminar.
     </p>
 
     <button onclick="mostrarTela('configuracao')">
@@ -557,7 +559,7 @@ input {
 
 
     <h3>
-        ⭐ Dificuldade
+        ⭐ Escolha a dificuldade
     </h3>
 
     <div class="opcoes">
@@ -607,7 +609,7 @@ input {
 <div id="jogo" class="tela">
 
     <h2>
-        🔎 Thai Word Hunt
+        🔎 Caça-Palavras Tailandês
     </h2>
 
 
@@ -914,11 +916,9 @@ const bancoPalavras = {
    VARIÁVEIS
 ========================= */
 
-let categoriaEscolhida =
-    "cumprimentos";
+let categoriaEscolhida = "cumprimentos";
 
-let dificuldadeEscolhida =
-    "facil";
+let dificuldadeEscolhida = "facil";
 
 let nome = "";
 
@@ -954,9 +954,7 @@ function mostrarTela(id) {
         .querySelectorAll(".tela")
         .forEach(tela => {
 
-            tela.classList.remove(
-                "ativa"
-            );
+            tela.classList.remove("ativa");
 
         });
 
@@ -1086,12 +1084,15 @@ document
 
 
 /* =========================
-   SEPARAR THAI
+   SEPARAR CARACTERES TAILANDESES
 ========================= */
 
 function separarThai(texto) {
 
-    if (Intl.Segmenter) {
+    if (
+        typeof Intl !== "undefined" &&
+        Intl.Segmenter
+    ) {
 
         const segmenter =
             new Intl.Segmenter(
@@ -1144,11 +1145,6 @@ function iniciarJogo() {
 
     }
 
-
-    /*
-       EMBARALHA O BANCO
-       ANTES DE ESCOLHER AS PALAVRAS
-    */
 
     const bancoEmbaralhado =
         embaralhar(
@@ -1209,6 +1205,12 @@ function iniciarJogo() {
 
     segundos = 0;
 
+    arrastando = false;
+
+    inicioSelecao = null;
+
+    celulasSelecao = [];
+
 
     document
         .getElementById("pontos")
@@ -1268,18 +1270,12 @@ function criarGrade() {
             coluna++
         ) {
 
-            grade[linha][coluna] =
-                null;
+            grade[linha][coluna] = null;
 
         }
 
     }
 
-
-    /*
-       COLOCA AS PALAVRAS
-       EM POSIÇÕES ALEATÓRIAS
-    */
 
     for (
         let item of palavras
@@ -1291,10 +1287,6 @@ function criarGrade() {
 
     }
 
-
-    /*
-       PREENCHE ESPAÇOS VAZIOS
-    */
 
     const letrasThai = [
 
@@ -1348,9 +1340,7 @@ function criarGrade() {
    COLOCAR PALAVRA
 ========================= */
 
-function colocarPalavra(
-    palavra
-) {
+function colocarPalavra(palavra) {
 
     const letras =
         separarThai(palavra);
@@ -1359,19 +1349,12 @@ function colocarPalavra(
     const direcoes = [
 
         [0, 1],
-
         [0, -1],
-
         [1, 0],
-
         [-1, 0],
-
         [1, 1],
-
         [1, -1],
-
         [-1, 1],
-
         [-1, -1]
 
     ];
@@ -1379,10 +1362,9 @@ function colocarPalavra(
 
     for (
         let tentativa = 0;
-        tentativa < 300;
+        tentativa < 500;
         tentativa++
     ) {
-
 
         const direcao =
 
@@ -1424,18 +1406,11 @@ function colocarPalavra(
             (letras.length - 1);
 
 
-        /*
-           VERIFICA SE CABE
-        */
-
         if (
 
             linhaFinal < 0 ||
-
             linhaFinal >= tamanho ||
-
             colunaFinal < 0 ||
-
             colunaFinal >= tamanho
 
         ) {
@@ -1447,10 +1422,6 @@ function colocarPalavra(
 
         let pode = true;
 
-
-        /*
-           VERIFICA CONFLITOS
-        */
 
         for (
             let i = 0;
@@ -1472,11 +1443,9 @@ function colocarPalavra(
 
             if (
 
-                grade[linha][coluna]
-                !== null &&
+                grade[linha][coluna] !== null &&
 
-                grade[linha][coluna]
-                !== letras[i]
+                grade[linha][coluna] !== letras[i]
 
             ) {
 
@@ -1495,10 +1464,6 @@ function colocarPalavra(
 
         }
 
-
-        /*
-           COLOCA A PALAVRA
-        */
 
         for (
             let i = 0;
@@ -1536,7 +1501,7 @@ function colocarPalavra(
 
 
 /* =========================
-   DESENHAR
+   DESENHAR GRADE
 ========================= */
 
 function desenharGrade() {
@@ -1608,7 +1573,7 @@ function desenharGrade() {
 
 
 /* =========================
-   LISTA DE PALAVRAS
+   MOSTRAR PALAVRAS
 ========================= */
 
 function mostrarPalavras() {
@@ -1643,9 +1608,7 @@ function mostrarPalavras() {
 
                 `<b>${item[0]}</b>
                 <br>
-                <small>
-                    ${item[1]}
-                </small>`;
+                <small>${item[1]}</small>`;
 
 
             lista.appendChild(
@@ -1675,6 +1638,17 @@ function iniciarSelecao(event) {
         event.currentTarget;
 
 
+    if (
+        celula.setPointerCapture
+    ) {
+
+        celula.setPointerCapture(
+            event.pointerId
+        );
+
+    }
+
+
     inicioSelecao = {
 
         linha:
@@ -1694,11 +1668,8 @@ function iniciarSelecao(event) {
 
 
     marcarSelecao(
-
         inicioSelecao,
-
         inicioSelecao
-
     );
 
 }
@@ -1706,91 +1677,101 @@ function iniciarSelecao(event) {
 
 
 /* =========================
-   MOVIMENTO
+   MOVIMENTO DO DEDO/MOUSE
 ========================= */
 
 document.addEventListener(
-
     "pointermove",
-
-    event => {
-
-        if (!arrastando)
-            return;
-
-
-        event.preventDefault();
-
-
-        const elemento =
-
-            document.elementFromPoint(
-
-                event.clientX,
-
-                event.clientY
-
-            );
-
-
-        if (!elemento)
-            return;
-
-
-        const celula =
-            elemento.closest(
-                ".letra"
-            );
-
-
-        if (!celula)
-            return;
-
-
-        const atual = {
-
-            linha:
-                Number(
-                    celula.dataset.linha
-                ),
-
-            coluna:
-                Number(
-                    celula.dataset.coluna
-                )
-
-        };
-
-
-        marcarSelecao(
-
-            inicioSelecao,
-
-            atual
-
-        );
-
-    },
-
+    movimentarSelecao,
     {
         passive: false
     }
-
 );
+
+
+function movimentarSelecao(event) {
+
+    if (!arrastando)
+        return;
+
+
+    event.preventDefault();
+
+
+    const elemento =
+        document.elementFromPoint(
+            event.clientX,
+            event.clientY
+        );
+
+
+    if (!elemento)
+        return;
+
+
+    const celula =
+        elemento.closest(".letra");
+
+
+    if (!celula)
+        return;
+
+
+    const atual = {
+
+        linha:
+            Number(
+                celula.dataset.linha
+            ),
+
+        coluna:
+            Number(
+                celula.dataset.coluna
+            )
+
+    };
+
+
+    marcarSelecao(
+        inicioSelecao,
+        atual
+    );
+
+}
 
 
 
 /* =========================
-   FINALIZAR TOQUE
+   FINALIZAR SELEÇÃO
 ========================= */
 
 document.addEventListener(
-
     "pointerup",
-
     finalizarSelecao
-
 );
+
+
+document.addEventListener(
+    "pointercancel",
+    finalizarSelecao
+);
+
+
+function finalizarSelecao(event) {
+
+    if (!arrastando)
+        return;
+
+
+    arrastando = false;
+
+
+    verificarPalavra();
+
+
+    inicioSelecao = null;
+
+}
 
 
 
@@ -1844,28 +1825,20 @@ function marcarSelecao(
 
 
     const passoLinha =
-        Math.sign(
-            deltaLinha
-        );
+        Math.sign(deltaLinha);
 
 
     const passoColuna =
-        Math.sign(
-            deltaColuna
-        );
+        Math.sign(deltaColuna);
 
 
     const quantidade =
 
         Math.max(
 
-            Math.abs(
-                deltaLinha
-            ),
+            Math.abs(deltaLinha),
 
-            Math.abs(
-                deltaColuna
-            )
+            Math.abs(deltaColuna)
 
         );
 
@@ -1902,15 +1875,21 @@ function marcarSelecao(
 
         if (celula) {
 
-            celula.classList.add(
-                "selecionada"
-            );
+            if (
+                !celula.classList
+                    .contains("encontrada")
+            ) {
+
+                celula.classList.add(
+                    "selecionada"
+                );
+
+            }
 
 
             celulasSelecao.push({
 
                 linha,
-
                 coluna
 
             });
@@ -1936,18 +1915,13 @@ function limparSelecao() {
         .forEach(celula => {
 
             if (
-
                 !celula.classList
-                    .contains(
-                        "encontrada"
-                    )
-
+                    .contains("encontrada")
             ) {
 
-                celula.classList
-                    .remove(
-                        "selecionada"
-                    );
+                celula.classList.remove(
+                    "selecionada"
+                );
 
             }
 
@@ -1995,11 +1969,11 @@ function verificarPalavra() {
     const reverso =
 
         separarThai(texto)
-        .reverse()
-        .join("");
+            .reverse()
+            .join("");
 
 
-    let encontrada = false;
+    let encontrou = false;
 
 
     palavras.forEach(
@@ -2015,20 +1989,18 @@ function verificarPalavra() {
                     .includes(index) &&
 
                 (
-
                     texto === palavra ||
-
                     reverso === palavra
-
                 )
 
             ) {
 
-                encontrada = true;
+                encontrou = true;
 
 
-                palavrasEncontradas
-                    .push(index);
+                palavrasEncontradas.push(
+                    index
+                );
 
 
                 pontos += 100;
@@ -2044,8 +2016,7 @@ function verificarPalavra() {
 
                 document
                     .getElementById(
-                        "palavra-" +
-                        index
+                        "palavra-" + index
                     )
                     .classList
                     .add(
@@ -2053,38 +2024,35 @@ function verificarPalavra() {
                     );
 
 
-                celulasSelecao
-                    .forEach(
-                        posicao => {
+                celulasSelecao.forEach(
+                    posicao => {
 
-                            const celula =
+                        const celula =
 
-                                document.querySelector(
+                            document.querySelector(
 
-                                    `.letra[data-linha="${posicao.linha}"][data-coluna="${posicao.coluna}"]`
+                                `.letra[data-linha="${posicao.linha}"][data-coluna="${posicao.coluna}"]`
 
+                            );
+
+
+                        if (celula) {
+
+                            celula.classList
+                                .remove(
+                                    "selecionada"
                                 );
 
 
-                            if (celula) {
-
-                                celula
-                                    .classList
-                                    .remove(
-                                        "selecionada"
-                                    );
-
-
-                                celula
-                                    .classList
-                                    .add(
-                                        "encontrada"
-                                    );
-
-                            }
+                            celula.classList
+                                .add(
+                                    "encontrada"
+                                );
 
                         }
-                    );
+
+                    }
+                );
 
 
                 document
@@ -2102,7 +2070,7 @@ function verificarPalavra() {
     );
 
 
-    if (!encontrada) {
+    if (!encontrou) {
 
         limparSelecao();
 
@@ -2227,7 +2195,7 @@ function formatarTempo(
 
 
 /* =========================
-   TERMINAR
+   TERMINAR JOGO
 ========================= */
 
 function terminarJogo() {
@@ -2475,9 +2443,7 @@ function voltarInicio() {
 
     clearInterval(intervalo);
 
-    mostrarTela(
-        "inicio"
-    );
+    mostrarTela("inicio");
 
 }
 
@@ -2488,12 +2454,6 @@ function voltarInicio() {
 ========================= */
 
 function novoJogo() {
-
-    /*
-       Mantém o nome,
-       mas cria uma NOVA GRADE
-       e EMBARALHA tudo novamente.
-    */
 
     document
         .getElementById(
@@ -2506,50 +2466,8 @@ function novoJogo() {
 
 }
 
-
-
-/* =========================
-   IMPEDIR SCROLL NO CELULAR
-========================= */
-
-document
-    .getElementById("grade")
-    .addEventListener(
-
-        "touchstart",
-
-        event => {
-
-            event.preventDefault();
-
-        },
-
-        {
-            passive: false
-        }
-
-    );
-
-
-document
-    .getElementById("grade")
-    .addEventListener(
-
-        "touchmove",
-
-        event => {
-
-            event.preventDefault();
-
-        },
-
-        {
-            passive: false
-        }
-
-    );
-
 </script>
 
 </body>
+
 </html>
